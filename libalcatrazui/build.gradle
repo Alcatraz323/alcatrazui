@@ -29,7 +29,7 @@ android {
 
 }
 
-apply from: "bintray-upload.gradle"
+apply from: "bintrayUpload.gradle"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

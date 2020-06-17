@@ -1,0 +1,18 @@
+apply plugin: 'com.novoda.bintray-release'
+// This is the library version used when deploying the artifact
+
+publish{
+    repoName = 'AlcatrazDev'
+    userOrg = 'alcatraz323'
+    groupId = 'io.alcatraz.alcatrazui'
+    artifactId = 'libalcatrazui'
+    publishVersion = '1.0.0'
+    desc = 'Material Design 2 UI and Utility library'
+    website = 'https://github.com/Alcatraz323/alcatrazui'
+}
+
+tasks.withType(Javadoc) {//防止编码问题
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
