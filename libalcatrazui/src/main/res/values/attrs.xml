@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="InteractiveCardView">
+        <attr name="showOverlay" format="boolean"/>
+        <attr name="showProgress" format="boolean"/>
+        <attr name="showOverlaySubInfo" format="boolean"/>
+        <attr name="showOverlayInfo" format="boolean"/>
+        <attr name="showSubtitle" format="boolean"/>
+        <attr name="indicatorImageSrc" format="reference"/>
+        <attr name="indicatorImageTint" format="color"/>
+        <attr name="baseCardBackgroundColor" format="color"/>
+        <attr name="overlayIndicatorImageSrc" format="reference"/>
+        <attr name="overlayIndicatorImageTint" format="color"/>
+        <attr name="overlayCardBackgroundColor" format="color"/>
+        <attr name="title" format="string"/>
+        <attr name="subtitle" format="string"/>
+        <attr name="overlayTitle" format="string"/>
+        <attr name="overlayInfo" format="string"/>
+        <attr name="overlaySubInfo" format="string"/>
+        <attr name="cardMargin" format="dimension"/>
+        <attr name="cardCornerRadius" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="FlattenedCardView">
+        <attr name="cardTitle" format="string"/>
+        <attr name="cardSubtitle" format="string"/>
+        <attr name="cardShowSubtitle" format="boolean"/>
+        <attr name="cardPubMargin" format="dimension"/>
+        <attr name="cardRippleRadius" format="dimension"/>
+        <attr name="imageSrc" format="reference"/>
+        <attr name="imageTint" format="color"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:text="FlattenedCards(With Parent LinearLayout Border)"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/card_boarder"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <io.alcatraz.libalcatrazui.views.FlattenedCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardSubtitle="SubTitle"
+                        app:cardTitle="Title"
+                        app:imageTint="@color/base_gray_tint"
+                        app:cardShowSubtitle="true"
+                        app:imageSrc="@drawable/ic_access_time_black_24dp" />
+
+                    <io.alcatraz.libalcatrazui.views.FlattenedCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardSubtitle="SubTitle"
+                        app:cardTitle="Title"
+                        app:imageTint="@color/pink_colorPrimary"
+                        app:imageSrc="@drawable/ic_history_black_24dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:text="FlattenedCards"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+                <io.alcatraz.libalcatrazui.views.FlattenedCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardSubtitle="SubTitle"
+                    app:cardTitle="Title"
+                    app:imageTint="@color/base_gray_tint"
+                    app:cardShowSubtitle="true"
+                    app:imageSrc="@drawable/ic_access_time_black_24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:text="InteractiveCards"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+                <io.alcatraz.libalcatrazui.views.InteractiveCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:indicatorImageSrc="@drawable/ic_history_black_24dp"
+                    app:indicatorImageTint="@color/colorAccent"
+                    app:subtitle="SubTitle1"
+                    app:title="Title1" />
+
+                <io.alcatraz.libalcatrazui.views.InteractiveCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:indicatorImageSrc="@drawable/ic_history_black_24dp"
+                    app:indicatorImageTint="@color/green_colorPrimary"
+                    app:subtitle="SubTitle2"
+                    app:title="Title2"
+                    app:showProgress="true"/>
+
+                <io.alcatraz.libalcatrazui.views.InteractiveCardView
+                    android:id="@+id/overlay_interactive_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:indicatorImageSrc="@drawable/ic_history_black_24dp"
+                    app:indicatorImageTint="@color/colorAccent"
+                    app:subtitle="SubTitle"
+                    app:overlayTitle="Overlay Title"
+                    app:overlayInfo="OverlayInfo:Test Line#1\nTest Line#2"
+                    app:overlaySubInfo="Something wrong(Status)"
+                    app:overlayIndicatorImageSrc="@drawable/ic_alert"
+                    app:overlayIndicatorImageTint="@android:color/white"
+                    app:overlayCardBackgroundColor="@color/pink_colorPrimary"
+                    app:title="Title" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,3 @@
+rootProject.name='AlcatrazUI'
+include ':app'
+include ':libalcatrazui'

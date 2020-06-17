@@ -1,0 +1,35 @@
+<resources>
+    <string name="main_menu_1">Settings</string>
+    <string name="main_menu_2">About</string>
+    <string name="main_menu_3">Refresh</string>
+    <string name="main_menu_4">Internal Log</string>
+
+    <!--SetupWizard-->
+    <string name="setup_step_next">Next</string>
+    <string name="setup_step_next_final">Done</string>
+    <string name="setup_step_before">Forward</string>
+
+    <string name="til_error_inv_param">Invalid parameter</string>
+    <string name="toast_copied">Copied</string>
+    <string name="toast_perm_denied">Permission Denied</string>
+    <string name="ad_pb">Yes</string>
+    <string name="ad_nb">Cancel</string>
+    <string name="ad_pb2">Yes</string>
+    <string name="ad_nb2">No</string>
+    <string name="ad_nb3">Close</string>
+    <string name="ad_nb4">Clear</string>
+    <string name="ad_processing">Processing…</string>
+    <string name="empty_view">Empty</string>
+
+    <!--About-->
+    <string name="au_l_1">Version</string>
+    <string name="au_l_2">Developer</string>
+    <string name="au_l_3">Check sourcecode</string>
+    <string name="au_l_4">Open source Licenses</string>
+    <string name="au_l_4_1">Respect to opensource</string>
+    <string name="au_l_5">Donate</string>
+    <string name="au_l_5_1">Thanks</string>
+    <string name="au_osp">Opensource Projects</string>
+
+    <!--If you are translating, do not translate below-->
+</resources>

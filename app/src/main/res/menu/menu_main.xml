@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.alcatraz.alcatrazui.MainActivity">
+    <item
+        android:id="@+id/action_setup"
+        android:orderInCategory="100"
+        android:title="SetupActivity"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_about"
+        android:title="AboutActivity" />
+    <item
+        android:id="@+id/action_log"
+        android:title="LogActivity" />
+</menu>
