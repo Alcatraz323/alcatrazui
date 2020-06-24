@@ -22,6 +22,7 @@
         app:cardMaxElevation="5dp">
 
         <FrameLayout
+            android:id="@+id/alc_interactive_card_content_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

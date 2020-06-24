@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import io.alcatraz.libalcatrazui.LogBuff
 import io.alcatraz.libalcatrazui.activities.CompatWithPipeActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,7 +23,14 @@ class MainActivity : CompatWithPipeActivity() {
         LogBuff.log("Test")
         LogBuff.addDivider()
 
-        overlay_interactive_1.setShowOverlay(true)
+        Thread(Runnable{
+            Thread.sleep(3000)
+            runOnUiThread {
+                overlay_interactive_1.showOverlay = true
+            }
+        }).start()
+
+        overlay_interactive_1.setOnClickListener { toast("Click") }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

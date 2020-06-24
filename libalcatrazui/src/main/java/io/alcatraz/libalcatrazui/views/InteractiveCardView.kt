@@ -12,31 +12,114 @@ import io.alcatraz.libalcatrazui.databinding.ViewInteractiveCardBinding
 import io.alcatraz.libalcatrazui.utils.AnimateUtils
 import io.alcatraz.libalcatrazui.utils.Utils
 
+@Suppress("MemberVisibilityCanBePrivate")
 class InteractiveCardView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     var cardBinding: ViewInteractiveCardBinding =
         ViewInteractiveCardBinding.inflate(context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
-    private var showOverlay = false
-    private var showProgress = false
-    private var showOverlaySubInfo = true
-    private var showOverlayInfo = true
-    private var showSubtitle = true
-    private var indicatorImageSrc: Int = 0
-    private var indicatorImageTint: Int = 0
-    private var baseCardBackgroundColor: Int = 0
-    private var overlayIndicatorImageSrc: Int = 0
-    private var overlayIndicatorImageTint: Int = 0
-    private var overlayCardBackgroundColor: Int = 0
-    private var title = ""
-    private var subtitle = ""
-    private var overlayTitle = ""
-    private var overlayInfo = ""
-    private var overlaySubInfo = ""
-    private var cardMargin: Int = Utils.dp2Px(context, 16f)
-    private var cardCornerRadius: Int = Utils.dp2Px(context, 8f)
+    var showOverlay = false
+        set(value) {
+            field = value
+            showOverlay(value)
+        }
+    var showProgress = false
+        set(value) {
+            field = value
+            showProgressPrivate(value)
+        }
+    var showOverlaySubInfo = true
+        set(value) {
+            field = value
+            updateTextVisibility()
+        }
+    var showOverlayInfo = true
+        set(value) {
+            field = value
+            updateTextVisibility()
+        }
+    var showSubtitle = true
+        set(value) {
+            field = value
+            updateTextVisibility()
+        }
+    var indicatorImageSrc: Int = 0
+        set(value) {
+            field = value
+            updateIndicatorImage()
+        }
+    var indicatorImageTint: Int = 0
+        set(value) {
+            field = value
+            updateIndicatorImage()
+        }
+    var baseCardBackgroundColor: Int = 0
+        set(value) {
+            field = value
+            updateBackground()
+        }
+    var overlayIndicatorImageSrc: Int = 0
+        set(value) {
+            field = value
+            updateOverlayIndicatorImage()
+        }
+    var overlayIndicatorImageTint: Int = 0
+        set(value) {
+            field = value
+            updateOverlayIndicatorImage()
+        }
+    var overlayCardBackgroundColor: Int = 0
+        set(value) {
+            field = value
+            updateBackground()
+        }
+    var title = ""
+        set(value) {
+            field = value
+            cardBinding.alcInteractiveCardTitle.text = value
+        }
+    var subtitle = ""
+        set(value) {
+            field = value
+            cardBinding.alcInteractiveCardSubtitle.text = value
+        }
+    var overlayTitle = ""
+        set(value) {
+            field = value
+            cardBinding.alcInteractiveCardOverlayTitle.text = value
+        }
+    var overlayInfo = ""
+        set(value) {
+            field = value
+            cardBinding.alcInteractiveCardOverlayInfo.text = value
+        }
+    var overlaySubInfo = ""
+        set(value) {
+            field = value
+            cardBinding.alcInteractiveCardOverlaySubinfo.text = value
+        }
+    var cardMargin: Int = Utils.dp2Px(context, 16f)
+        set(value) {
+            field = value
+            updateCardInDefaultPattern()
+        }
+    var cardCornerRadius: Int = Utils.dp2Px(context, 8f)
+        set(value) {
+            field = value
+            cardBinding.alcInteractiveCard.radius = value.toFloat()
+        }
 
     init {
+        loadAttributes(attrs)
+        addView(cardBinding.root)
+        updateAttributes()
+    }
+
+    override fun setOnClickListener(l: OnClickListener?) {
+        cardBinding.alcInteractiveCard.setOnClickListener(l)
+    }
+
+    private fun loadAttributes(attrs: AttributeSet? = null) {
         if (attrs != null) {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.InteractiveCardView)
             showOverlay = typedArray.getBoolean(R.styleable.InteractiveCardView_showOverlay, false)
@@ -77,16 +160,55 @@ class InteractiveCardView @JvmOverloads constructor(
             )
             typedArray.recycle()
         }
-        addView(cardBinding.root)
-        loadAttributes()
     }
 
-    fun loadAttributes() {
+    fun updateAttributes() {
         if (showOverlay)
             cardBinding.alcInteractiveCardOverlayLayer.visibility = View.VISIBLE
         else
             cardBinding.alcInteractiveCardOverlayLayer.visibility = View.GONE
 
+        updateIndicatorImage()
+        updateOverlayIndicatorImage()
+        updateTextVisibility()
+        updateText()
+        updateBackground()
+        updateCardInDefaultPattern()
+    }
+
+    fun setMargin(pixelMLeft: Int, pixelMTop: Int, pixelMRight: Int, pixelMBottom: Int) {
+        val cardParams = cardBinding.alcInteractiveCard.layoutParams as LinearLayout.LayoutParams
+        cardParams.setMargins(pixelMLeft, pixelMTop, pixelMRight, pixelMBottom)
+        cardBinding.alcInteractiveCard.layoutParams = cardParams
+    }
+
+    @JvmOverloads
+    fun showOverlay(value: Boolean, animate: Boolean = true) {
+        if (value) {
+            if (cardBinding.alcInteractiveCardOverlayLayer.visibility == View.GONE) {
+                if (animate) {
+                    AnimateUtils.playStart(
+                        cardBinding.alcInteractiveCardOverlayLayer,
+                        null
+                    )
+                } else {
+                    cardBinding.alcInteractiveCardContentContainer.addView(cardBinding.alcInteractiveCardOverlayLayer)
+                }
+            }
+        } else {
+            if (cardBinding.alcInteractiveCardOverlayLayer.visibility == View.VISIBLE) {
+                if (animate) {
+                    AnimateUtils.playEnd(
+                        cardBinding.alcInteractiveCardOverlayLayer
+                    )
+                } else {
+                    cardBinding.alcInteractiveCardOverlayLayer.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    fun updateIndicatorImage() {
         cardBinding.alcInteractiveCardIndicatorImage.visibility = View.GONE
         if (showProgress) {
             cardBinding.alcInteractiveCardIndicatorProgress.visibility = View.VISIBLE
@@ -103,7 +225,9 @@ class InteractiveCardView @JvmOverloads constructor(
                 )
             }
         }
+    }
 
+    fun updateOverlayIndicatorImage() {
         cardBinding.alcInteractiveCardOverlayIndicatorImage.visibility = View.GONE
         if (overlayIndicatorImageSrc != 0) {
             cardBinding.alcInteractiveCardOverlayIndicatorImage.visibility = View.VISIBLE
@@ -116,26 +240,36 @@ class InteractiveCardView @JvmOverloads constructor(
                 overlayIndicatorImageTint
             )
         }
+    }
 
+    fun updateBackground() {
+        if (baseCardBackgroundColor != 0) {
+            cardBinding.alcInteractiveCardBaseLayer.setBackgroundColor(baseCardBackgroundColor)
+        }
+
+        if (overlayCardBackgroundColor != 0) {
+            cardBinding.alcInteractiveCardOverlayLayer.setBackgroundColor(overlayCardBackgroundColor)
+        }
+    }
+
+    fun updateTextVisibility() {
         cardBinding.alcInteractiveCardOverlaySubinfo.visibility =
             if (showOverlaySubInfo) View.VISIBLE else View.GONE
         cardBinding.alcInteractiveCardOverlayInfo.visibility =
             if (showOverlayInfo) View.VISIBLE else View.GONE
         cardBinding.alcInteractiveCardSubtitle.visibility =
             if (showOverlayInfo) View.VISIBLE else View.GONE
+    }
 
+    fun updateText() {
         cardBinding.alcInteractiveCardTitle.text = title
         cardBinding.alcInteractiveCardSubtitle.text = subtitle
         cardBinding.alcInteractiveCardOverlayTitle.text = overlayTitle
         cardBinding.alcInteractiveCardOverlayInfo.text = overlayInfo
         cardBinding.alcInteractiveCardOverlaySubinfo.text = overlaySubInfo
+    }
 
-        if (baseCardBackgroundColor != 0) {
-            cardBinding.alcInteractiveCardBaseLayer.setBackgroundColor(baseCardBackgroundColor)
-        }
-
-        cardBinding.alcInteractiveCardOverlayLayer.setBackgroundColor(overlayCardBackgroundColor)
-
+    fun updateCardInDefaultPattern() {
         val cardParams = cardBinding.alcInteractiveCard.layoutParams as LinearLayout.LayoutParams
         cardParams.setMargins(
             cardMargin,
@@ -147,36 +281,7 @@ class InteractiveCardView @JvmOverloads constructor(
         cardBinding.alcInteractiveCard.radius = cardCornerRadius.toFloat()
     }
 
-    @JvmOverloads
-    fun setShowOverlay(value: Boolean, animate: Boolean = true) {
-        if (value) {
-            if (cardBinding.alcInteractiveCardOverlayLayer.visibility == View.GONE) {
-                cardBinding.alcInteractiveCardOverlayLayer.visibility = View.VISIBLE
-                if (animate) {
-                    cardBinding.alcInteractiveCardOverlayLayer.post {
-                        AnimateUtils.playStart(
-                            cardBinding.alcInteractiveCardOverlayLayer,
-                            null
-                        )
-                    }
-                }
-            }
-        } else {
-            if (cardBinding.alcInteractiveCardOverlayLayer.visibility == View.VISIBLE) {
-                if (animate) {
-                    cardBinding.alcInteractiveCardOverlayLayer.post {
-                        AnimateUtils.playEnd(
-                            cardBinding.alcInteractiveCardOverlayLayer
-                        )
-                    }
-                } else {
-                    cardBinding.alcInteractiveCardOverlayLayer.visibility = View.GONE
-                }
-            }
-        }
-    }
-
-    fun setShowProgress(value: Boolean) {
+    private fun showProgressPrivate(value: Boolean) {
         if (value) {
             cardBinding.alcInteractiveCardIndicatorProgress.visibility = View.VISIBLE
             cardBinding.alcInteractiveCardIndicatorImage.visibility = View.GONE
@@ -184,11 +289,5 @@ class InteractiveCardView @JvmOverloads constructor(
             cardBinding.alcInteractiveCardIndicatorProgress.visibility = View.GONE
             cardBinding.alcInteractiveCardIndicatorImage.visibility = View.VISIBLE
         }
-    }
-
-    fun setMargin(pixelMLeft: Int, pixelMTop: Int, pixelMRight: Int, pixelMBottom: Int) {
-        val cardParams = cardBinding.alcInteractiveCard.layoutParams as LinearLayout.LayoutParams
-        cardParams.setMargins(pixelMLeft, pixelMTop, pixelMRight, pixelMBottom)
-        cardBinding.alcInteractiveCard.layoutParams = cardParams
     }
 }

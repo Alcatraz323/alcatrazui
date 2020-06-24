@@ -16,43 +16,45 @@ object AnimateUtils {
         v: View,
         animateInterface: SimpleAnimateInterface?
     ) {
-        v.visibility = View.VISIBLE
-        val animator = ViewAnimationUtils.createCircularReveal(
-            v,
-            v.x.toInt(),
-            v.y.toInt(),
-            0f,
-            Math.hypot(
-                v.width.toDouble(),
-                v.height.toDouble()
-            ).toFloat()
-        )
-        animator.interpolator = AccelerateInterpolator()
-        animator.duration = 600
-        animator.start()
-        animator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(p1: Animator) {
-                v.visibility = View.VISIBLE
-                val animationSet = AnimationSet(true)
-                val alphaAnimation = AlphaAnimation(0f, 1f)
-                alphaAnimation.duration = 700
-                animationSet.addAnimation(alphaAnimation)
-                v.startAnimation(animationSet)
-                animationSet.setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(p1: Animation) {}
-                    override fun onAnimationEnd(p1: Animation) {}
-                    override fun onAnimationRepeat(p1: Animation) {}
-                })
-            }
+        v.visibility = View.INVISIBLE
+        v.post{
+            val animator = ViewAnimationUtils.createCircularReveal(
+                v,
+                v.x.toInt(),
+                v.y.toInt(),
+                0f,
+                Math.hypot(
+                    v.width.toDouble(),
+                    v.height.toDouble()
+                ).toFloat()
+            )
+            animator.interpolator = AccelerateInterpolator()
+            animator.duration = 600
 
-            override fun onAnimationEnd(p1: Animator) {
-                v.visibility = View.VISIBLE
-                animateInterface?.onEnd()
-            }
+            animator.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(p1: Animator) {
+                    val animationSet = AnimationSet(true)
+                    val alphaAnimation = AlphaAnimation(0f, 1f)
+                    alphaAnimation.duration = 700
+                    animationSet.addAnimation(alphaAnimation)
+                    v.startAnimation(animationSet)
+                    animationSet.setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(p1: Animation) {}
+                        override fun onAnimationEnd(p1: Animation) {}
+                        override fun onAnimationRepeat(p1: Animation) {}
+                    })
+                }
 
-            override fun onAnimationCancel(p1: Animator) {}
-            override fun onAnimationRepeat(p1: Animator) {}
-        })
+                override fun onAnimationEnd(p1: Animator) {
+                    v.visibility = View.VISIBLE
+                    animateInterface?.onEnd()
+                }
+
+                override fun onAnimationCancel(p1: Animator) {}
+                override fun onAnimationRepeat(p1: Animator) {}
+            })
+            animator.start()
+        }
     }
 
 

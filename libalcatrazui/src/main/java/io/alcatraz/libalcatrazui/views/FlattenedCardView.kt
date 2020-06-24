@@ -11,21 +11,60 @@ import io.alcatraz.libalcatrazui.R
 import io.alcatraz.libalcatrazui.databinding.ViewFlattenedCardBinding
 import io.alcatraz.libalcatrazui.utils.Utils
 
+@Suppress("MemberVisibilityCanBePrivate")
 class FlattenedCardView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     var cardBinding: ViewFlattenedCardBinding =
         ViewFlattenedCardBinding.inflate(context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
 
-    private var title = ""
-    private var subtitle = ""
-    private var showSubtitle = false
-    private var cardPubMargin: Int = Utils.dp2Px(context, 16f)
-    private var cardRippleRadius: Int = Utils.dp2Px(context, 8f)
-    private var indicatorImageSrc: Int = 0
-    private var indicatorImageTint: Int = 0
+    var title = ""
+        set(value) {
+            field = value
+            cardBinding.alcFlattenedCardTitle.text = value
+        }
+    var subtitle = ""
+        set(value) {
+            field = value
+            cardBinding.alcFlattenedCardSubtitle.text = value
+        }
+    var showSubtitle = false
+        set(value) {
+            field = value
+            updateCardTextAndVisibility()
+        }
+    var cardPubMargin: Int = Utils.dp2Px(context, 16f)
+        set(value) {
+            field = value
+            updateCardInDefaultPattern()
+        }
+    var cardRippleRadius: Int = Utils.dp2Px(context, 8f)
+        set(value) {
+            field = value
+            cardBinding.alcFlattenedCard.radius = value.toFloat()
+        }
+    var indicatorImageSrc: Int = 0
+        set(value) {
+            field = value
+            updateCardImage()
+        }
+    var indicatorImageTint: Int = 0
+        set(value) {
+            field = value
+            updateCardImage()
+        }
 
     init {
+        loadAttributes(attrs)
+        addView(cardBinding.root)
+        updateAttributes()
+    }
+
+    override fun setOnClickListener(l: OnClickListener?) {
+        cardBinding.alcFlattenedCard.setOnClickListener(l)
+    }
+
+    fun loadAttributes(attrs: AttributeSet? = null) {
         if (attrs != null) {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.FlattenedCardView)
             title = typedArray.getString(R.styleable.FlattenedCardView_cardTitle) ?: ""
@@ -46,11 +85,15 @@ class FlattenedCardView @JvmOverloads constructor(
                 typedArray.getColor(R.styleable.FlattenedCardView_imageTint, 0)
             typedArray.recycle()
         }
-        addView(cardBinding.root)
-        loadAttributes()
     }
 
-    fun loadAttributes() {
+    fun updateAttributes() {
+        updateCardImage()
+        updateCardTextAndVisibility()
+        updateCardInDefaultPattern()
+    }
+
+    fun updateCardImage() {
         cardBinding.alcFlattenedCardImage.visibility = View.GONE
         if (indicatorImageSrc != 0) {
             cardBinding.alcFlattenedCardImage.visibility = View.VISIBLE
@@ -63,14 +106,24 @@ class FlattenedCardView @JvmOverloads constructor(
                 indicatorImageTint
             )
         }
+    }
 
-        cardBinding.alcFlattenedCardSubtitle.visibility = if (showSubtitle) View.VISIBLE else View.GONE
+    fun updateCardTextAndVisibility() {
+        cardBinding.alcFlattenedCardSubtitle.visibility =
+            if (showSubtitle) View.VISIBLE else View.GONE
 
         cardBinding.alcFlattenedCardTitle.text = title
         cardBinding.alcFlattenedCardSubtitle.text = subtitle
+    }
 
+    fun updateCardInDefaultPattern() {
         val cardParams = cardBinding.alcFlattenedCard.layoutParams as LinearLayout.LayoutParams
-        cardParams.setMargins(cardPubMargin, Utils.dp2Px(context, 8f), cardPubMargin, cardParams.bottomMargin)
+        cardParams.setMargins(
+            cardPubMargin,
+            Utils.dp2Px(context, 8f),
+            cardPubMargin,
+            cardParams.bottomMargin
+        )
         cardBinding.alcFlattenedCard.layoutParams = cardParams
         cardBinding.alcFlattenedCard.radius = cardRippleRadius.toFloat()
     }
